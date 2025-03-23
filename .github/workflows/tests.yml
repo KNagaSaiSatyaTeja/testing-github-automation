@@ -30,12 +30,12 @@ jobs:
           main_file_path = "main.py"
           file_path = ".github/workflows/testcases.py"
 
-           if os.path.isfile(main_file_path):
-          print("✅ main.py found. Checking test file exists...")
+          if os.path.isfile(main_file_path):
+            print("✅ main.py found. Checking test file exists...")
 
 
           if os.path.isfile(file_path):
-              print("✅ testcases.py already exists in workflows.")
+            print("✅ testcases.py already exists in workflows.")
           else:
               print("❌ testcases.py NOT found. Creating it now...")
               os.makedirs(".github/workflows", exist_ok=True)
