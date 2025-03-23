@@ -26,23 +26,23 @@ jobs:
           if [ ! -f ".tests/testcases.py" ]; then
             echo "Creating testcases.py in .tests/ directory..."
             cat <<EOF > .tests/testcases.py
-            import main
+          import main
 
-            def test_add():
-                assert main.add(2, 3) == 5
-                assert main.add(-1, 1) == 0
-                assert main.add(0, 0) == 0
+          def test_add():
+              assert main.add(2, 3) == 5
+              assert main.add(-1, 1) == 0
+              assert main.add(0, 0) == 0
 
-            if __name__ == "__main__":
-                print("✅ All test cases passed!")
-            EOF
-            echo "✅ testcases.py created successfully."
+          if __name__ == "__main__":
+              print("✅ All test cases passed!")
+          EOF
+          echo "✅ testcases.py created successfully."
           else
             echo "✅ testcases.py already exists in .tests/ directory."
           fi
 
       - name: List Files After Creation
-        run: ls -R .tests|| echo "⚠️ .tests directory not found!"
+        run: ls -la .tests|| echo "⚠️ .tests directory not found!"
 
       - name: Configure Git
         run: |
