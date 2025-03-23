@@ -52,6 +52,20 @@ jobs:
               print("✅  ")
           EOF
 
+      - name: List Files After Creation
+        run: ls -R .github/workflows
+
+      - name: Configure Git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Add and Commit Changes
+        run: |
+          git add .github/workflows/testcases.py
+          git commit -m "🚀 Auto-generate testcases.py for main.py" || echo "No changes to commit"
+          git push
+
       - name: Run Tests and Show Summary
         run: |
           if [ -f "testcases.py" ]; then
