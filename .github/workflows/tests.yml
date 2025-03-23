@@ -42,7 +42,7 @@ jobs:
           fi
 
       - name: List Files After Creation
-        run: ls -R .github/workflows
+        run: ls -R .tests
 
       - name: Configure Git
         run: |
