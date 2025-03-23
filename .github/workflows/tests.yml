@@ -59,7 +59,7 @@ jobs:
         run: |
           if [ -f ".tests/testcases.py" ]; then
             # Run pytest and capture results in a variable
-            result=$(pytest testcases.py --tb=short -q)
+            result=$(pytest .tests/testcases.py --tb=short -q)
             
             # Get the number of passed test cases
             passed=$(echo "$result" | grep -oP '\d+ passed' | awk '{print $1}')
