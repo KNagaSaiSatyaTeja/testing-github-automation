@@ -36,7 +36,7 @@ jobs:
           print(f"📂 Current directory: {os.getcwd()}")
           print(f"🔎 Absolute path of testcases.py: {os.path.abspath(file_path)}")
           print(f"🔎 Checking if main.py exists...")
-          print(f"✅ main.py found: {os.path.isfile(main_file)}")
+          print(f"✅ main.py found: {os.path.isfile(main_file_path)}")
           if os.path.isfile(file_path):
             print("✅ testcases.py already exists in workflows.")
           else:
