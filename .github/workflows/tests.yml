@@ -51,7 +51,7 @@ jobs:
 
       - name: Add and Commit Changes
         run: |
-          git add .github/workflows/testcases.py
+          git add .tests/testcases.py
           git commit -m "🚀 Auto-generate testcases.py for main.py" || echo "No changes to commit"
           git push https://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:&{}
 
