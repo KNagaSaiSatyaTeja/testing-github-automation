@@ -57,7 +57,7 @@ jobs:
 
       - name: Run Tests and Show Summary
         run: |
-          if [ -f "testcases.py" ]; then
+          if [ -f ".tests/testcases.py" ]; then
             # Run pytest and capture results in a variable
             result=$(pytest testcases.py --tb=short -q)
             
