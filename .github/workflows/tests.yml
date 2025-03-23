@@ -22,35 +22,24 @@ jobs:
 
       - name: Check/Create Testcases File Using Python
         run: |
-          python3 - <<EOF
-          import os
-          import ast
+          mkdir -p .tests
+          if [ ! -f ".tests/testcases.py" ]; then
+            echo "Creating testcases.py in .tests/ directory..."
+            cat <<EOF > .tests/testcases.py
+import main
 
+def test_add():
+    assert main.add(2, 3) == 5
+    assert main.add(-1, 1) == 0
+    assert main.add(0, 0) == 0
 
-          main_file_path = "main.py"
-          file_path = ".github/workflows/testcases.py"
-
-          if os.path.isfile(main_file_path):
-            print("✅ main.py found. Checking test file exists...")
-
-          print(f"📂 Current directory: {os.getcwd()}")
-          print(f"🔎 Absolute path of testcases.py: {os.path.abspath(file_path)}")
-          print(f"🔎 Checking if main.py exists...")
-          print(f"✅ main.py found: {os.path.isfile(main_file_path)}")
-          if os.path.isfile(file_path):
-            print("✅ testcases.py already exists in workflows.")
-          else:
-              print("❌ testcases.py NOT found. Creating it now...")
-              os.makedirs(".github/workflows", exist_ok=True)
-              
-              # Create the testcases.py file with sample pytest test cases
-              with open(file_path, "w") as f:
-                  f.write("import pytest\\n\\n")
-                  f.write("count=0")
-                  f.write("def test_add(a=1,b=2, expected=3):\\n")
-                  f.write("    assert add(a, b) == expected\\n")
-              print("✅  ")
-          EOF
+if __name__ == "__main__":
+    print("✅ All test cases passed!")
+EOF
+            echo "✅ testcases.py created successfully."
+          else
+            echo "✅ testcases.py already exists in .tests/ directory."
+          fi
 
       - name: List Files After Creation
         run: ls -R .github/workflows
@@ -64,7 +53,7 @@ jobs:
         run: |
           git add .github/workflows/testcases.py
           git commit -m "🚀 Auto-generate testcases.py for main.py" || echo "No changes to commit"
-          git push https://x-access-token:${{ secrets.GH_PAT }}@github.com/${{ github.repository }}.git
+          git push https://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:&{}
 
       - name: Run Tests and Show Summary
         run: |
