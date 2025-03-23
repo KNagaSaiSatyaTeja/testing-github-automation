@@ -1,0 +1,73 @@
+name: testing github action
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set Up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.x"
+
+      - name: Install pytest
+        run: |
+          pip install pytest
+
+      - name: Check/Create Testcases File Using Python
+        run: |
+          python3 - <<EOF
+          import os
+          import ast
+
+
+          main_file_path = "main.py"
+          file_path = ".github/workflows/testcases.py"
+
+           if os.path.isfile(main_file_path):
+          print("✅ main.py found. Checking test file exists...")
+
+
+          if os.path.isfile(file_path):
+              print("✅ testcases.py already exists in workflows.")
+          else:
+              print("❌ testcases.py NOT found. Creating it now...")
+              os.makedirs(".github/workflows", exist_ok=True)
+              
+              # Create the testcases.py file with sample pytest test cases
+              with open(file_path, "w") as f:
+                  f.write("import pytest\\n\\n")
+                  f.write("count=0")
+                  f.write("def test_add(a=1,b=2, expected=3):\\n")
+                  f.write("    assert add(a, b) == expected\\n")
+              print("✅  ")
+          EOF
+
+      - name: Run Tests and Show Summary
+        run: |
+          if [ -f "testcases.py" ]; then
+            # Run pytest and capture results in a variable
+            result=$(pytest testcases.py --tb=short -q)
+            
+            # Get the number of passed test cases
+            passed=$(echo "$result" | grep -oP '\d+ passed' | awk '{print $1}')
+            
+            # Get the total number of test cases (passed + failed)
+            total=$(echo "$result" | grep -oP '\d+ passed|\d+ failed' | awk '{sum+=$1} END {print sum}')
+
+            # Show summary
+            echo "✅ Tests Passed: ${passed:-0} / ${total:-0}"
+
+            # Fail if any tests failed
+            if [ "${passed:-0}" -lt "${total:-0}" ]; then
+              exit 1
+            fi
+          else
+            echo "⚠️ No testcases.py found. Skipping tests."
+          fi
